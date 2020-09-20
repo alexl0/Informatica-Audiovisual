@@ -1,3 +1,5 @@
+//Alejandro León Pereira UO258774
+
 float anteriorX,anteriorY;
 
 color colores[] = {
