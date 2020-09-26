@@ -8,16 +8,16 @@ int y = 0;
 int indicePrincipal = 0;
 int imagenGrande = 0;
 
-int izquierda = 0;
-int automatico = 0;
-int preparado = 0;
-int derecha = 0;
+boolean preparado = false;
+boolean derecha = false;
+boolean izquierda = false;
+boolean automatico = false;
 
 void setup()
 {
   selectFolder("Selecciona una imagen:", "imagenSeleccionada");
   background(color(211,211,211));
-  size(800, 600);
+  size(800, 800);
 }
 
 void imagenSeleccionada(File selection)
@@ -59,35 +59,35 @@ void procesarFicheros(String absolutePath)
       imagenes[i] = loadImage(path);
     }
   }
-  preparado = 1;
+  preparado = true;
 }
 
 void draw()
 {
   imageMode(CORNER);
 
-  if (preparado==1)
+  if (preparado)
   {
     pintar();
     pintarBorde(10);
     showimagenPrincipal();
   }
-  if (derecha==1)
+  if (derecha)
   {
     moverDerecha();
     showimagenPrincipal();
     pintarBorde(10);
-    derecha = 0;
+    derecha = false;
   }
-  if (izquierda==1)
+  if (izquierda)
   {
     moverIzquierda();
     showimagenPrincipal();
     pintarBorde(10);
-    izquierda = 0;
+    izquierda = false;
   }
 
-  if (automatico==1)
+  if (automatico)
   {
     next();
   }
@@ -124,7 +124,7 @@ void pintar()
     x = x + width / 3;
     cont++;
   }
-  preparado = 0;
+  preparado = false;
   x = 0;
 }
 
@@ -168,54 +168,75 @@ void moverIzquierda()
     aux = i;
   }
   indicePrincipal = aux;
-  preparado = 0;
+  preparado = false;
 }
 
 void keyPressed()
 {
 
-    switch(keyCode) {
-        case RIGHT: 
+  if (keyCode == RIGHT)
+  {
     indicePrincipal++;
+    //System.out.println("Indice pasará a la derch: " + indicePrincipal);
     indicePrincipal = (indicePrincipal > imagenes.length - 1) ? 0 : indicePrincipal;
-    derecha = 1;
-            break;
-        case LEFT: 
+    derecha = true;
+  }
+
+  if (keyCode == LEFT)
+  {
     indicePrincipal++;
     //System.out.println("Indice pasará a la izq: " + indicePrincipal);
     indicePrincipal = (indicePrincipal - 1 >= 0) ? indicePrincipal : imagenes.length - 1;
-    izquierda = 1;
-            break;
-        case CONTROL:
-            saveFrame("captura.png");
-            break;
-    }
+    izquierda = true;
+  }
 
-    switch(key) {
-        case 'b': 
-    tint(0, 153, 204);
+  if (key == 'b')
+  {
+
+    blueFiltro();
     image(imagenPrincipal, 800 / 5.8, 600 / 2.5, width / 1.5, height / 2);
-            break;
-        case 'n': 
-    tint(255, 255, 255);
+  }
+
+  if (key == 'n')
+  {
+    noFiltro();
     image(imagenPrincipal, 800 / 5.8, 600 / 2.5, width / 1.5, height / 2);
-            break;
-        case 'p': 
-    tint(247, 191, 190);
+  }
+
+  if (key == 'p')
+  {
+
+    pinkFiltro();
     image(imagenPrincipal, 800 / 5.8, 600 / 2.5, width / 1.5, height / 2);
-            break;
-        case 'c': 
+  }
+
+  if (key == 'c')
+  {
     System.out.println("Modo presentacion activado");
-    automatico = 1;
-            break;
-        case 's': 
-    System.out.println("Modo presentacion desactivado");
-    automatico = 0;
-            break;
-    }
+    automatico = true;
+  }
 
+  if (key == 's')
+  {
+    System.out.println("Modo presentacion desactivado");
+    automatico = false;
+  }
 }
 
+void blueFiltro()
+{
+  tint(0, 153, 204);
+}
+
+void noFiltro()
+{
+  tint(255, 255, 255);
+}
+
+void pinkFiltro()
+{
+  tint(247, 191, 190);
+}
 
 void next()
 {
@@ -224,6 +245,6 @@ void next()
   moverDerecha();
   showimagenPrincipal();
   pintarBorde(10);
-  derecha = 0;
+  derecha = false;
   delay(3000);
 }
