@@ -189,23 +189,23 @@ void keyPressed()
   switch (key)
   {
   case 'b':
-    tint(0, 153, 204);
+    tint(0, 100, 200);
     actualizar();
     break;
-  case 'n':
+  case 'q':
     tint(255, 255, 255);
     actualizar();
     break;
-  case 'p':
-    tint(247, 191, 190);
+  case 'r':
+    tint(200, 100, 0);
     actualizar();
     break;
   case 'c':
-    System.out.println("Modo presentacion activado");
+    System.out.println("Modo presentación: activado.");
     automatico = 1;
     break;
   case 's':
-    System.out.println("Modo presentacion desactivado");
+    System.out.println("Modo presentación: desactivado.");
     automatico = 0;
     break;
   }

@@ -1,0 +1,5 @@
+Modo presentación: c
+Pausar presentación: s
+Filtro azul: b
+Filtro rojo: r 
+Quitar filtro: q
