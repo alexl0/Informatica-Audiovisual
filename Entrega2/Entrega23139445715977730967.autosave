@@ -16,7 +16,7 @@ short derecha = 0;
 void setup()
 {
   selectFolder("Selecciona una imagen:", "imagenSeleccionada");
-  background(color(51, 51, 255));
+  background(color(211, 211, 211));
   size(800, 700);
 }
 
@@ -37,19 +37,17 @@ void procesarFicheros(String absolutePath)
 
   short count = 0;
   short in = 0;
-  while (in <= archivos.length - 1)
-  {
+  while(in <= archivos.length - 1){
     String path = archivos[in].getAbsolutePath();
     if (path.toLowerCase().endsWith("jpg"))
       count++;
-    in++;
+      in++;
   }
 
   imagenes = new PImage[count];
 
-  short i = 0;
-  while (i <= archivos.length - 1)
-  {
+short i = 0;
+while(i <= archivos.length - 1){
     String path = archivos[i].getAbsolutePath();
     if (path.toLowerCase().endsWith("jpg"))
     {
@@ -57,7 +55,7 @@ void procesarFicheros(String absolutePath)
       imagenes[i] = loadImage(path);
     }
     i++;
-  }
+}
 
   preparado = 1;
 }
@@ -101,8 +99,8 @@ void showimagenPrincipal()
   float x = 150;
   float y = 300;
   float x2 = width / 1.5;
-  float y2 = height / 2;
-  image(imagenes[imagenGrande], x, y, x2, y2);
+  float y2= height / 2;
+  image(imagenes[imagenGrande],x,y,x2,y2);
 }
 
 void pintar()
@@ -123,19 +121,17 @@ void moverDerecha()
   short cont = 0;
   x = 0;
   short i = posicion;
-  while (cont < 3)
-  {
+  while(cont < 3){
     if (i > imagenes.length - 1)
     {
       i = 0;
     }
-    float x2 = width / 3;
-    float y2 = height / 3;
-    image(imagenes[i], x, y, x2, y2);
-    x += (short)(x2);
+    image(imagenes[i], x, y, width / 3, height / 3);
+    x = (short)(x + width / 3);
     cont++;
     i++;
   }
+
 }
 
 void moverIzquierda()
@@ -210,13 +206,12 @@ void keyPressed()
     break;
   }
 }
-void actualizar()
-{
+void actualizar(){
   float x = 150;
   float y = 300;
   float x2 = width / 1.5;
-  float y2 = height / 2;
-  image(imagenes[imagenGrande], x, y, x2, y2);
+  float y2= height / 2;
+  image(imagenes[imagenGrande],x,y,x2,y2);
 }
 void next()
 {
