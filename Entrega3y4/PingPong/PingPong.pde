@@ -41,8 +41,10 @@ void draw()
     noStroke();
     fill(169, 169, 169);
     dibujarPelota();
-    dibujarPala();
-    dibujarMarcador();
+    rect((float)xPala, (float)yPala, 50, 10);
+    textSize(30);
+    fill(0, 102, 153);
+    text(contadorFallos, anchonuevo - 30, 30);
 
     if (xPelota <= xPala + 50 && yPelota >= yPala && yPelota <= yPala + 10 && xPelota >= xPala)
     {
@@ -59,7 +61,7 @@ void draw()
       yPelota = random(1, altonuevo / 2);
       if (contadorFallos == 0)
       {
-        finalizarPartida();
+        fin = 1;
         contador2 = 0;
         minim.stop();
       }
@@ -81,7 +83,7 @@ void draw()
       textSize(25);
       fill(0, 0, 255);
       text("Gameover", alto / 3, alto / 3, 400, 80);
-      text("J – volver a jugar.", alto / 3, alto / 3, 400, 80);
+      text("J – volver a jugar.", alto / 3, alto / 2, 400, 80);
     }
     else
     {
@@ -125,19 +127,6 @@ void dibujarPelota()
   }
   ellipse((float)xPelota, (float)yPelota, 16 + contador2, 16 + contador2);
 }
-void comprobarFuera()
-{
-  if (yPelota < altonuevo || xPelota > anchonuevo)
-  {
-    xPelota = random(1, anchonuevo - 1 + contador2);
-    yPelota = random(1, altonuevo / 2 + contador2);
-  }
-}
-
-void finalizarPartida()
-{
-  fin = 1;
-}
 
 void keyPressed()
 {
@@ -145,8 +134,8 @@ void keyPressed()
   {
     if (fin == 1)
     {
-      contadorFallos = 5;
       fin = 0;
+      contadorFallos = 5;
       empezar = 0;
       clear();
       setup();
@@ -156,20 +145,10 @@ void keyPressed()
     }
   }
 }
-void dibujarPala()
-{
-  rect((float)xPala, (float)yPala, 50, 10);
-}
 
-void dibujarMarcador()
-{
-  textSize(30);
-  fill(0, 102, 153);
-  text(contadorFallos, anchonuevo - 30, 30);
-}
 void mouseMoved()
 {
-  if (mouseX > xPala)
+  if (mouseX < xPala)
     xPala = pmouseX;
   else
     xPala = pmouseX;
