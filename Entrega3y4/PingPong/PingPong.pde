@@ -1,47 +1,42 @@
+
 import ddf.minim.*;
-import ddf.minim.analysis.*;
-import ddf.minim.effects.*;
-import ddf.minim.signals.*;
-import ddf.minim.spi.*;
-import ddf.minim.ugens.*;
 
 Minim minim;
 AudioPlayer player;
 color c = color(255, 0, 0);
-long cont;
-long anchoPantalla = 200;
-long altoPantalla = 200;
+long contador;
+long contador2 = 0;
+long ancho = 200;
+long alto = 200;
 double xPelota = 70;
 double yPelota = 100;
-long nuevoAnchoPantalla = 200;
-long nuevoAltoPantalla = 200;
-double xspeed;
-double yspeed;
-long contFallos;
-int parar = 1;
-String text;
-int primero = 1;
-double xPala = anchoPantalla / 2;
-double yPala = altoPantalla - 30;
-
+long anchonuevo = 200;
+long altonuevo = 200;
+double velocidadX;
+double velocidadY;
+long contadorFallos;
+int fin = 1;
+int empezar = 1;
+double xPala = ancho / 2;
+double yPala = alto - 30;
 
 void setup()
 {
   size(400, 400);
   surface.setResizable(true);
   smooth();
+  velocidadX = random(2, 5);
   background(169, 169, 169);
-  xspeed = random(2, 5);
-  yspeed = random(2, 5);
-  cont = 0;
-  xPelota = random(2, nuevoAnchoPantalla - 1);
-  yPelota = random(2, nuevoAltoPantalla / 2);
+  yPelota = random(2, altonuevo / 2);
+  xPelota = random(2, anchonuevo - 1);
+  velocidadY = random(2, 5);
+  contador = 0;
 }
 
 void draw()
 {
 
-  if (parar==0)
+  if (fin == 0)
   {
     noStroke();
     fill(169, 169, 169);
@@ -51,113 +46,108 @@ void draw()
 
     if (xPelota <= xPala + 50 && yPelota >= yPala && yPelota <= yPala + 10 && xPelota >= xPala)
     {
-      cont++;
-      xspeed = -xspeed;
-      yspeed = -yspeed;
+      contador++;
+      velocidadX = -velocidadX;
+      velocidadY = -velocidadY;
       noStroke();
     }
 
     if (height + 50 < yPelota)
     {
-      contFallos--;
-      xPelota = random(1, nuevoAnchoPantalla - 1);
-      yPelota = random(1, nuevoAltoPantalla / 2);
-      System.out.println("Has perdido");
-      if (contFallos == 0)
+      contadorFallos--;
+      xPelota = random(1, anchonuevo - 1);
+      yPelota = random(1, altonuevo / 2);
+      if (contadorFallos == 0)
       {
         finalizarPartida();
+        contador2 = 0;
         minim.stop();
       }
       clear();
       setup();
     }
 
-    if (cont == 5)
+    if (contador == 5)
     {
-      xspeed += (xspeed * 50) / 100;
-      yspeed += (yspeed * 50) / 100;
-      cont = 0;
+      contador = 0;
+      velocidadY += (velocidadY * 50) / 100;
+      velocidadX += (velocidadX * 50) / 100;
     }
   }
-  if (parar==1)
+  if (fin == 1)
   {
-    if (primero==0)
+    if (empezar == 0)
     {
       textSize(25);
-      fill(211,211,211);
-      text = "Has perdido. Pulsa J para continuar.";
-      text(text, altoPantalla / 3, altoPantalla / 3, 200, 80);
+      fill(0, 0, 255);
+      text("Gameover", alto / 3, alto / 3, 400, 80);
+      text("J – volver a jugar.", alto / 3, alto / 3, 400, 80);
     }
     else
     {
       textSize(25);
       fill(0, 0, 255);
-      text("PONG", altoPantalla / 2, altoPantalla / 3, 200, 80);
-      text("Pulsa 'J' para continuar.", altoPantalla / 2, altoPantalla / 1.5, 200, 80);
+      text("PONG", alto / 2, alto / 3, 200, 80);
+      text("Pulse ‘j” para empezar", alto / 2, alto / 1.5, 200, 80);
     }
   }
 
-  if (width != nuevoAnchoPantalla)
+  if (width != anchonuevo)
   {
-    xspeed = (xspeed * width) / anchoPantalla;
-    nuevoAnchoPantalla = width;
-    xPala = nuevoAnchoPantalla / 2;
+    velocidadX = (velocidadX * width) / ancho;
+    anchonuevo = width;
+    xPala = anchonuevo / 2;
   }
-  if (height != nuevoAltoPantalla)
+  if (height != altonuevo)
   {
-    yspeed = (yspeed * height) / altoPantalla;
-    nuevoAltoPantalla = height;
-    yPala = nuevoAltoPantalla - 30;
+    velocidadY = (velocidadY * height) / alto;
+    altonuevo = height;
+    yPala = altonuevo - 30;
   }
 }
-
-
 
 void dibujarPelota()
 {
   rect(0, 0, (float)width, (float)height);
-  // Add the current speed to the location.
-  xPelota = xPelota + xspeed;
-  yPelota = yPelota + yspeed;
+  xPelota = xPelota + velocidadX + contador2;
+  yPelota = yPelota + velocidadY + contador2;
   stroke(0);
   fill(120);
-  // Check for bouncing
-  if ((xPelota > width) || (xPelota < 0))
+  if ((xPelota < 0) || (xPelota > width))
   {
-    xspeed = xspeed * -1;
+    velocidadX = velocidadX * -1;
     noFill();
   }
   if ((yPelota < 0))
   {
-    yspeed = yspeed * -1;
+    velocidadY = velocidadY * -1 + contador2;
     noFill();
   }
-  // Display at x,y location
-  ellipse((float)xPelota, (float)yPelota, 16, 16);
+  ellipse((float)xPelota, (float)yPelota, 16 + contador2, 16 + contador2);
 }
 void comprobarFuera()
 {
-  if (xPelota > nuevoAnchoPantalla || yPelota < nuevoAltoPantalla)
+  if (yPelota < altonuevo || xPelota > anchonuevo)
   {
-    xPelota = random(1, nuevoAnchoPantalla - 1);
-    yPelota = random(1, nuevoAltoPantalla / 2);
+    xPelota = random(1, anchonuevo - 1 + contador2);
+    yPelota = random(1, altonuevo / 2 + contador2);
   }
 }
 
 void finalizarPartida()
 {
-  parar = 1;
+  fin = 1;
 }
 
 void keyPressed()
 {
   if (key == 'j')
   {
-    if (parar==1)
+    if (fin == 1)
     {
-      contFallos = 5;
-      parar = 0;
-      primero = 0;
+      contadorFallos = 5;
+      fin = 0;
+      empezar = 0;
       clear();
       setup();
       minim = new Minim(this);
@@ -175,7 +165,7 @@ void dibujarMarcador()
 {
   textSize(30);
   fill(0, 102, 153);
-  text(contFallos, nuevoAnchoPantalla - 30, 30);
+  text(contadorFallos, anchonuevo - 30, 30);
 }
 void mouseMoved()
 {
