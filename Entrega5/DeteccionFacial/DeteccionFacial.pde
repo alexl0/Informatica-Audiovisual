@@ -36,9 +36,4 @@ void draw()
       i++;
     }
   }
-  else
-  {
-    System.out.println("Ancho o alto del video menor o igual a 0");
-    return;
-  }
 }

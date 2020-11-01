@@ -1,0 +1,2 @@
+al principio del programa hay una variable: notaMedia
+    esta nota, puede ser de 0 a 10, y definirá la alegría de las caras
